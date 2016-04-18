@@ -1,17 +1,23 @@
-package com.ade.jedis.client;
+package com.ade.jedis.api;
 
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisException;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * Created by Niranjan on 4/18/2016.
  */
-public class LoadingInitialDataDrugIndicationEventPair {
+@Component
+@SuppressWarnings("unchecked")
+public class LoadingInitialDataDrugEventPair {
 
     //address of your redis server
     private static final String redisHost = "127.0.0.1";
@@ -21,7 +27,7 @@ public class LoadingInitialDataDrugIndicationEventPair {
     //private static JedisPool pool = null;
 
 
-    public void behaveAsMapOfSets(String input_file_address,Jedis jedis) throws InterruptedException {
+    public static void behaveAsMapOfSets(String input_file_address, Jedis jedis) throws InterruptedException {
 
         //configure our pool connection
         //pool = new JedisPool(redisHost, redisPort);
@@ -51,16 +57,16 @@ public class LoadingInitialDataDrugIndicationEventPair {
 
                         String[] inputData = line.split(",");
 
-                        if (drugEventList.containsKey(inputData[1])) {
+                        if (drugEventList.containsKey(inputData[0])) {
 
-                            HashSet<String> oldValue = drugEventList.get(inputData[1]);
+                            HashSet<String> oldValue = drugEventList.get(inputData[0]);
                             oldValue.add(inputData[2]);
-                            drugEventList.put(inputData[1], oldValue);
+                            drugEventList.put(inputData[0], oldValue);
                         } else {
-                            if (!drugEventList.containsKey(inputData[1])) {
+                            if (!drugEventList.containsKey(inputData[0])) {
                                 HashSet<String> newValue = new HashSet<String>();
                                 newValue.add(inputData[2]);
-                                drugEventList.put(inputData[1],newValue);
+                                drugEventList.put(inputData[0],newValue);
                             }
                         }
 
@@ -101,30 +107,28 @@ public class LoadingInitialDataDrugIndicationEventPair {
 
     }
 
-    public static void main(String args[]) throws InterruptedException {
+    public static boolean loading(int databaseIndex,String fileAddress,String resultFileAddress) throws InterruptedException {
 
-
-        LoadingInitialDataDrugIndicationEventPair loadingInitialDataDrugEventPair = new LoadingInitialDataDrugIndicationEventPair();
-        // this is the path from which the documents to be queried
-        String input_files_address=args[0];
 
         Jedis jedis = new Jedis(redisHost, redisPort);
         jedis.connect();
 
 
         //need to get the index of the database from the user next time
-        jedis.select(1);
+        jedis.select(databaseIndex);
         //please be careful this will erase all previously existing data
-        //jedis.flushDB();
+        jedis.flushDB();
 
         System.out.println("Connected jedis client");
         try{
             //calling the function
-            loadingInitialDataDrugEventPair.behaveAsMapOfSets(input_files_address,jedis);
+            behaveAsMapOfSets(fileAddress,jedis);
         }finally {
             jedis.disconnect();
             System.out.println("\nDisconnected jedis client");
         }
         System.out.println("Database_Loaded");
+
+        return true;
     }
 }
