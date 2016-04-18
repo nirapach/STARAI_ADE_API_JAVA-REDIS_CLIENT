@@ -47,7 +47,6 @@ public class LoadingInitialData {
                     //adding the drug events to a hashmap
                     HashMap<String, HashSet<String>> drugEventList = new HashMap<String, HashSet<String>>();
                     while ((line = fileReader.readLine()) != null) {
-                        //Read the CSV file header to skip it
 
                         String[] inputData = line.split(",");
 
@@ -68,17 +67,12 @@ public class LoadingInitialData {
 
                     for(Map.Entry<String, HashSet<String>> entry : drugEventList.entrySet()) {
 
-                        //jedis.hset(entry.getKey(), "Drug_Name", entry.getKey());
-
                         HashSet<String> updatedSet = entry.getValue();
                         //System.out.println(entry.getKey()+","+updatedSet.size());
                         for(String eventValue:updatedSet){
                             jedis.sadd(entry.getKey(), eventValue);
                         }
                     }
-
-                    System.out.println("Test Result");
-                    System.out.println(jedis.smembers("SYNTHROID TAB"));
                 }
             }
         } catch (JedisException e) {
@@ -116,10 +110,10 @@ public class LoadingInitialData {
         Jedis jedis = new Jedis(redisHost, redisPort);
         jedis.connect();
 
-        //careful this will erase all previously existing data
+
         //need to get the index of the database from the user next time
         jedis.select(1);
-
+        //please be careful this will erase all previously existing data
         jedis.flushDB();
 
         System.out.println("Connected jedis client");
