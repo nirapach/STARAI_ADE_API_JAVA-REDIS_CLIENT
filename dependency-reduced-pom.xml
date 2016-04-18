@@ -24,7 +24,7 @@
                   <resource>META-INF/spring.schemas</resource>
                 </transformer>
                 <transformer>
-                  <mainClass>com.ade.jedis.client.LoadingInitialData</mainClass>
+                  <mainClass>com.ade.jedis.client.LoadingInitialDataDrugEventPair</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -36,7 +36,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>com.ade.jedis.client.LoadingInitialData</mainClass>
+          <mainClass>com.ade.jedis.client.LoadingInitialDataDrugEventPair</mainClass>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>
       </plugin>

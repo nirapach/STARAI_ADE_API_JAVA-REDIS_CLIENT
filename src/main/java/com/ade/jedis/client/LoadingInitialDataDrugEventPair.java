@@ -1,7 +1,6 @@
 package com.ade.jedis.client;
 
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisException;
 
 import java.io.*;
@@ -10,7 +9,7 @@ import java.util.*;
 /**
  * Created by Niranjan on 4/18/2016.
  */
-public class LoadingInitialData {
+public class LoadingInitialDataDrugEventPair {
 
     //address of your redis server
     private static final String redisHost = "127.0.0.1";
@@ -103,7 +102,7 @@ public class LoadingInitialData {
     public static void main(String args[]) throws InterruptedException {
 
 
-        LoadingInitialData loadingInitialData = new LoadingInitialData();
+        LoadingInitialDataDrugEventPair loadingInitialDataDrugEventPair = new LoadingInitialDataDrugEventPair();
         // this is the path from which the documents to be queried
         String input_files_address=args[0];
 
@@ -119,7 +118,7 @@ public class LoadingInitialData {
         System.out.println("Connected jedis client");
         try{
             //calling the function
-            loadingInitialData.behaveAsMapOfSets(input_files_address,jedis);
+            loadingInitialDataDrugEventPair.behaveAsMapOfSets(input_files_address,jedis);
         }finally {
             jedis.disconnect();
             System.out.println("\nDisconnected jedis client");
