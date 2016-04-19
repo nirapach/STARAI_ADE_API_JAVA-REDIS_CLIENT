@@ -8,18 +8,13 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * Created by Niranjan on 4/18/2016.
  */
 @Component
 @SuppressWarnings("unchecked")
-public class LoadingInitialDataDrugIndicationEventPair {
+public class LoadingInitialDataDrugIndicationDrugPair {
 
     //address of your redis server
     private static final String redisHost = "127.0.0.1";
@@ -27,6 +22,20 @@ public class LoadingInitialDataDrugIndicationEventPair {
 
     //the jedis connection pool..
     //private static JedisPool pool = null;
+
+
+    public static String dataCleaning(String inputString){
+
+        if(inputString != null && inputString !=" ") {
+            inputString = inputString.replaceAll("MG", " ");
+            inputString = inputString.replaceAll("ML", " ");
+            inputString = inputString.replaceAll("[^a-zA-Z]+", " ");
+            inputString = inputString.replaceAll("[^a-zA-Z]+", " ");
+            inputString = inputString.trim();
+            inputString = inputString.toLowerCase();
+        }
+        return inputString;
+    }
 
     public static void behaveAsMapOfSets(String input_file_address, Jedis jedis) throws InterruptedException {
 
@@ -58,26 +67,45 @@ public class LoadingInitialDataDrugIndicationEventPair {
 
                         String[] inputData = line.split(",");
 
-                        if (drugEventList.containsKey(inputData[1])) {
+                        if ((inputData.length > 2 || inputData.length > 1) && (inputData[1] != null && inputData[1] != " ")) {
 
-                            HashSet<String> oldValue = drugEventList.get(inputData[1]);
-                            oldValue.add(inputData[2]);
-                            drugEventList.put(inputData[1], oldValue);
-                        } else {
-                            if (!drugEventList.containsKey(inputData[1])) {
-                                HashSet<String> newValue = new HashSet<String>();
-                                newValue.add(inputData[2]);
-                                drugEventList.put(inputData[1],newValue);
+                            String drugName;
+                            String drugIndication=inputData[1];
+                            drugIndication=dataCleaning(drugIndication);
+
+                            if (drugEventList.containsKey(drugIndication) && drugIndication !=null ) {
+
+                                drugName=inputData[0];
+                                drugName=dataCleaning(drugName);
+                                HashSet<String> oldValue = drugEventList.get(drugIndication);
+                                if (drugName != " " && drugName != null) {
+                                    oldValue.add(drugName);
+                                } else {
+                                    oldValue.add("Not Specified");
+                                }
+                                drugEventList.put(drugIndication, oldValue);
+                            } else {
+                                if (!drugEventList.containsKey(drugIndication)  && drugIndication !=null) {
+                                    HashSet<String> newValue = new HashSet<String>();
+                                    drugName=inputData[0];
+                                    drugName=dataCleaning(drugName);
+                                    if (drugName != " " && drugName != null) {
+                                        newValue.add(drugName);
+                                    } else {
+                                        newValue.add("Not Specified");
+                                    }
+                                    drugEventList.put(drugIndication, newValue);
+                                }
                             }
                         }
 
                     }
 
-                    for(Map.Entry<String, HashSet<String>> entry : drugEventList.entrySet()) {
+                    for (Map.Entry<String, HashSet<String>> entry : drugEventList.entrySet()) {
 
                         HashSet<String> updatedSet = entry.getValue();
                         //System.out.println(entry.getKey()+","+updatedSet.size());
-                        for(String eventValue:updatedSet){
+                        for (String eventValue : updatedSet) {
                             jedis.sadd(entry.getKey(), eventValue);
                         }
                     }
@@ -108,7 +136,7 @@ public class LoadingInitialDataDrugIndicationEventPair {
 
     }
 
-    public static boolean loading(int databaseIndex,String fileAddress,String resultFileAddress) throws InterruptedException {
+    public static boolean loading(int databaseIndex, String fileAddress, String resultFileAddress) throws InterruptedException {
 
 
         Jedis jedis = new Jedis(redisHost, redisPort);
@@ -120,10 +148,10 @@ public class LoadingInitialDataDrugIndicationEventPair {
         //jedis.flushDB();
 
         System.out.println("Connected jedis client");
-        try{
+        try {
             //calling the function
-           behaveAsMapOfSets(fileAddress,jedis);
-        }finally {
+            behaveAsMapOfSets(fileAddress, jedis);
+        } finally {
             jedis.disconnect();
             System.out.println("\nDisconnected jedis client");
         }
