@@ -29,7 +29,7 @@ public class LoadingInitialDataDrugEventPair {
 
     public static String dataCleaning(String inputString){
 
-        if(inputString != null && inputString !=" ") {
+        if(inputString != null && inputString !=" "  && inputString !="") {
             inputString = inputString.replaceAll("MG", " ");
             inputString = inputString.replaceAll("ML", " ");
             inputString = inputString.replaceAll("[^a-zA-Z]+", " ");
@@ -76,23 +76,23 @@ public class LoadingInitialDataDrugEventPair {
                             String drugName=inputData[0];
                             drugName=dataCleaning(drugName);
 
-                            if (drugEventList.containsKey(drugName) && drugName !=null ) {
+                            if (drugEventList.containsKey(drugName) && drugName !=null && drugName !="" ) {
 
                                 eventPair=inputData[2];
                                 eventPair=dataCleaning(eventPair);
                                 HashSet<String> oldValue = drugEventList.get(drugName);
-                                if (eventPair != " " && eventPair != null) {
+                                if (eventPair != " " && eventPair != null && eventPair != "") {
                                     oldValue.add(eventPair);
                                 } else {
                                     oldValue.add("Not Specified");
                                 }
                                 drugEventList.put(drugName, oldValue);
                             } else {
-                                if (!drugEventList.containsKey(drugName)  && drugName !=null) {
+                                if (!drugEventList.containsKey(drugName)  && drugName !=null && drugName !="") {
                                     HashSet<String> newValue = new HashSet<String>();
                                     eventPair=inputData[2];
                                     eventPair=dataCleaning(eventPair);
-                                    if (eventPair != " " && eventPair != null) {
+                                    if (eventPair != " " && eventPair != null && eventPair != "") {
                                         newValue.add(eventPair);
                                     } else {
                                         newValue.add("Not Specified");
