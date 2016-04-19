@@ -27,6 +27,19 @@ public class LoadingInitialDataDrugEventPair {
     //private static JedisPool pool = null;
 
 
+    public static String dataCleaning(String inputString){
+
+        if(inputString != null && inputString !=" ") {
+            inputString = inputString.replaceAll("MG", " ");
+            inputString = inputString.replaceAll("ML", " ");
+            inputString = inputString.replaceAll("[^a-zA-Z]+", " ");
+            inputString = inputString.replaceAll("[^a-zA-Z]+", " ");
+            inputString = inputString.trim();
+            inputString = inputString.toLowerCase();
+        }
+        return inputString;
+    }
+
     public static void behaveAsMapOfSets(String input_file_address, Jedis jedis) throws InterruptedException {
 
         //configure our pool connection
@@ -57,16 +70,35 @@ public class LoadingInitialDataDrugEventPair {
 
                         String[] inputData = line.split(",");
 
-                        if (drugEventList.containsKey(inputData[0])) {
+                        if ((inputData.length > 2 || inputData.length > 1) && (inputData[0] != null && inputData[0] != " ")) {
 
-                            HashSet<String> oldValue = drugEventList.get(inputData[0]);
-                            oldValue.add(inputData[2]);
-                            drugEventList.put(inputData[0], oldValue);
-                        } else {
-                            if (!drugEventList.containsKey(inputData[0])) {
-                                HashSet<String> newValue = new HashSet<String>();
-                                newValue.add(inputData[2]);
-                                drugEventList.put(inputData[0],newValue);
+                            String eventPair;
+                            String drugName=inputData[0];
+                            drugName=dataCleaning(drugName);
+
+                            if (drugEventList.containsKey(drugName) && drugName !=null ) {
+
+                                eventPair=inputData[2];
+                                eventPair=dataCleaning(eventPair);
+                                HashSet<String> oldValue = drugEventList.get(drugName);
+                                if (eventPair != " " && eventPair != null) {
+                                    oldValue.add(eventPair);
+                                } else {
+                                    oldValue.add("Not Specified");
+                                }
+                                drugEventList.put(drugName, oldValue);
+                            } else {
+                                if (!drugEventList.containsKey(drugName)  && drugName !=null) {
+                                    HashSet<String> newValue = new HashSet<String>();
+                                    eventPair=inputData[2];
+                                    eventPair=dataCleaning(eventPair);
+                                    if (eventPair != " " && eventPair != null) {
+                                        newValue.add(eventPair);
+                                    } else {
+                                        newValue.add("Not Specified");
+                                    }
+                                    drugEventList.put(drugName, newValue);
+                                }
                             }
                         }
 
