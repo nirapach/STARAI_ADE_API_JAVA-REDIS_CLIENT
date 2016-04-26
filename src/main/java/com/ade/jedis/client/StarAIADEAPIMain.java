@@ -75,6 +75,9 @@ public class StarAIADEAPIMain {
             case 4:
                 apiDelegator.loadingOffsidesInitialDataDrugEventPairNewDatabaseStats(databaseIndex,input_file_address,result_files_address);
 
+            case 3:
+                apiDelegator.retrieveData(input_file_address,result_files_address);
+
             default:
                 break;
 
