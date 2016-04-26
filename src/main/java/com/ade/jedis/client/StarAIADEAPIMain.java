@@ -73,6 +73,9 @@ public class StarAIADEAPIMain {
                 apiDelegator.loadingInitialDataDrugIndicationEventPairStats(databaseIndex, input_file_address, result_files_address);
                 break;
 
+            case 3:
+                apiDelegator.retrieveData(input_file_address,result_files_address);
+
             default:
                 break;
 
