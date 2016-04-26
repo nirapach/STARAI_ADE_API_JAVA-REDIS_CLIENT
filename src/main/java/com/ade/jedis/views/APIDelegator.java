@@ -4,8 +4,9 @@ package com.ade.jedis.views;
  * Created by Niranjan on 4/18/2016.
  */
 
-import com.ade.jedis.api.LoadingInitialDataDrugEventPair;
-import com.ade.jedis.api.LoadingInitialDataDrugIndicationDrugPair;
+import com.ade.jedis.api.LoadingInitialDataDrugEventPairOverallDatabase;
+import com.ade.jedis.api.LoadingOffsidesInitialDataDrugEventPairNewDatabase;
+import com.ade.jedis.api.LoadingInitialDataDrugIndicationDrugPairOverallDatabase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,26 +28,38 @@ public class APIDelegator {
         Logger logger = LoggerFactory.getLogger(APIDelegator.class);
 
     @Autowired
-    LoadingInitialDataDrugEventPair loadingInitialDataDrugEventPair;
+    LoadingInitialDataDrugEventPairOverallDatabase loadingInitialDataDrugEventPairOverallDatabase;
     @Autowired
-    LoadingInitialDataDrugIndicationDrugPair loadingInitialDataDrugIndicationDrugPair;
+    LoadingInitialDataDrugIndicationDrugPairOverallDatabase loadingInitialDataDrugIndicationDrugPairOverallDatabase;
+    @Autowired
+    LoadingOffsidesInitialDataDrugEventPairNewDatabase loadingOffsidesInitialDataDrugEventPairNewDatabase;
 
     public void loadingInitialDataDrugEventPairStats(int databaseIndex,String fileAddress,String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
 
-        boolean finishedLoading = loadingInitialDataDrugEventPair.loading(databaseIndex,fileAddress,resultFileAddress);
+        boolean finishedLoading = loadingInitialDataDrugEventPairOverallDatabase.loading(databaseIndex,fileAddress,resultFileAddress);
 
         if(finishedLoading){
-            System.out.println("Drug Event Pair Loading Completed Successfully");
+            System.out.println("FDA Drug Event Pair Loading Completed Successfully");
         }
 
     }
 
     public void loadingInitialDataDrugIndicationEventPairStats(int databaseIndex,String fileAddress,String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
 
-        boolean finishedLoading = loadingInitialDataDrugIndicationDrugPair.loading(databaseIndex,fileAddress,resultFileAddress);
+        boolean finishedLoading = loadingInitialDataDrugIndicationDrugPairOverallDatabase.loading(databaseIndex,fileAddress,resultFileAddress);
 
         if(finishedLoading){
-            System.out.println("Drug Indication Drug Name Pair Loading Completed Successfully");
+            System.out.println(" FDA Drug Indication Drug Name Pair Loading Completed Successfully");
+        }
+
+    }
+
+    public void loadingOffsidesInitialDataDrugEventPairNewDatabaseStats(int databaseIndex,String fileAddress,String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
+
+        boolean finishedLoading = loadingOffsidesInitialDataDrugEventPairNewDatabase.loading(databaseIndex,fileAddress,resultFileAddress);
+
+        if(finishedLoading){
+            System.out.println(" FDA Drug Indication Drug Name Pair Loading Completed Successfully");
         }
 
     }
