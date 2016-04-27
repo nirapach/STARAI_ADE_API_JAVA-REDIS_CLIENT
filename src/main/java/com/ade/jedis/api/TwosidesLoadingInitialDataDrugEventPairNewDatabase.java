@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Component
 @SuppressWarnings("unchecked")
-public class LoadingInitialDataDrugIndicationDrugPairOverallDatabase {
+public class TwosidesLoadingInitialDataDrugEventPairNewDatabase {
 
     //address of your redis server
     private static final String redisHost = "127.0.0.1";
@@ -44,7 +44,7 @@ public class LoadingInitialDataDrugIndicationDrugPairOverallDatabase {
         //get a jedis connection jedis connection pool
         //Jedis jedis = pool.getResource();
         File datadirectory = new File(input_file_address);
-        System.out.println("\nLoading data in this format [Map<String, List<String>>] = [Map<Drug, List<Event>>]");
+        System.out.println("\nLoading Offsides data in this format [Map<String, List<String>>] = [Map<Drug + Drug, List<Event>>]");
 
         //Jedis jedis = null;
         //csv files to get the wuery terms
@@ -64,49 +64,60 @@ public class LoadingInitialDataDrugIndicationDrugPairOverallDatabase {
                     //adding the drug events to a hashmap
                     HashMap<String, HashSet<String>> drugEventList = new HashMap<String, HashSet<String>>();
                     while ((line = fileReader.readLine()) != null) {
+                        if (line.indexOf(":") != -1) {
 
-                        String[] inputData = line.split(",");
+                            String[] inputData = line.split(":");
 
-                        if ((inputData.length > 2 || inputData.length > 1) && (inputData[1] != null && inputData[1] != " ")) {
+                            if ((inputData.length > 1) && (inputData[0] != null && inputData[0] != " ") && (inputData[1] != null && inputData[1] != " ")) {
+                                String eventSubstring = inputData[1].substring(inputData[1].indexOf("["), inputData[1].lastIndexOf("]"));
+                                String eventData[] = eventSubstring.split(",");
+                                String[] drugNamePair = inputData[0].split(",");
+                                //writing the keys as a combination of two drugs using the delimiter '::'
+                                String drugName = drugNamePair[0]+"::"+drugNamePair[1];
 
-                            String drugName;
-                            String drugIndication = inputData[1];
-                            drugIndication = dataCleaning(drugIndication);
-
-                            if (drugEventList.containsKey(drugIndication) && drugIndication != null && drugIndication != "") {
-
-                                drugName = inputData[0];
                                 drugName = dataCleaning(drugName);
-                                HashSet<String> oldValue = drugEventList.get(drugIndication);
-                                if (drugName != " " && drugName != null && drugName != "") {
-                                    oldValue.add(drugName);
-                                } else {
-                                    oldValue.add("Not Specified");
-                                }
-                                drugEventList.put(drugIndication, oldValue);
-                            } else {
-                                if (!drugEventList.containsKey(drugIndication) && drugIndication != null && drugIndication != "") {
-                                    HashSet<String> newValue = new HashSet<String>();
-                                    drugName = inputData[0];
-                                    drugName = dataCleaning(drugName);
-                                    if (drugName != " " && drugName != null && drugName != "") {
-                                        newValue.add(drugName);
+                                /*System.out.println(drugName);
+                                System.out.println("---------------------------------------------------");*/
+                                String eventPair;
+                                for (int e = 0; e < eventData.length; e++) {
+
+                                    eventPair = dataCleaning(eventData[e]);
+                                    /*System.out.println(eventPair);
+                                    System.out.println("///////////////////////////////////////////////");*/
+                                    if (drugEventList.containsKey(drugName) && drugName != null && drugName != "") {
+
+                                        HashSet<String> oldValue = drugEventList.get(drugName);
+                                        if (eventPair != " " && eventPair != null && eventPair != "") {
+                                            oldValue.add(eventPair);
+                                        } else {
+                                            oldValue.add("Not Specified");
+                                        }
+                                        drugEventList.put(drugName, oldValue);
                                     } else {
-                                        newValue.add("Not Specified");
+                                        if (!drugEventList.containsKey(drugName) && drugName != null && drugName != "") {
+                                            HashSet<String> newValue = new HashSet<String>();
+
+                                            if (eventPair != " " && eventPair != null && eventPair != "") {
+                                                newValue.add(eventPair);
+                                            } else {
+                                                newValue.add("Not Specified");
+                                            }
+                                            drugEventList.put(drugName, newValue);
+                                        }
                                     }
-                                    drugEventList.put(drugIndication, newValue);
                                 }
                             }
+
                         }
 
-                    }
 
-                    for (Map.Entry<String, HashSet<String>> entry : drugEventList.entrySet()) {
+                        for (Map.Entry<String, HashSet<String>> entry : drugEventList.entrySet()) {
 
-                        HashSet<String> updatedSet = entry.getValue();
-                        //System.out.println(entry.getKey()+","+updatedSet.size());
-                        for (String eventValue : updatedSet) {
-                            jedis.sadd(entry.getKey(), eventValue);
+                            HashSet<String> updatedSet = entry.getValue();
+                            //System.out.println(entry.getKey()+","+updatedSet.size());
+                            for (String eventValue : updatedSet) {
+                                jedis.sadd(entry.getKey(), eventValue);
+                            }
                         }
                     }
                 }
@@ -142,6 +153,7 @@ public class LoadingInitialDataDrugIndicationDrugPairOverallDatabase {
         Jedis jedis = new Jedis(redisHost, redisPort);
         jedis.connect();
 
+
         //need to get the index of the database from the user next time
         jedis.select(databaseIndex);
         //please be careful this will erase all previously existing data
@@ -156,6 +168,7 @@ public class LoadingInitialDataDrugIndicationDrugPairOverallDatabase {
             System.out.println("\nDisconnected jedis client");
         }
         System.out.println("Database_Loaded");
+
         return true;
     }
 }

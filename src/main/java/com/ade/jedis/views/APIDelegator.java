@@ -26,19 +26,21 @@ public class APIDelegator {
     Logger logger = LoggerFactory.getLogger(APIDelegator.class);
 
     @Autowired
-    LoadingInitialDataDrugEventPairOverallDatabase loadingInitialDataDrugEventPairOverallDatabase;
+    FDALoadingInitialDataDrugEventPairOverallDatabase FDALoadingInitialDataDrugEventPairOverallDatabase;
     @Autowired
-    LoadingInitialDataDrugIndicationDrugPairOverallDatabase loadingInitialDataDrugIndicationDrugPairOverallDatabase;
+    FDALoadingInitialDataDrugIndicationDrugPairOverallDatabase FDALoadingInitialDataDrugIndicationDrugPairOverallDatabase;
     @Autowired
     RetrieveData retrieveData;
     @Autowired
-    LoadingOffsidesInitialDataDrugEventPairNewDatabase loadingOffsidesInitialDataDrugEventPairNewDatabase;
+    OffsidesLoadingInitialDataDrugEventPairNewDatabase offsidesLoadingInitialDataDrugEventPairNewDatabase;
     @Autowired
-    LoadingTwosidesInitialDataDrugEventPairNewDatabase loadingTwosidesInitialDataDrugEventPairNewDatabase;
+    TwosidesLoadingInitialDataDrugEventPairNewDatabase twosidesLoadingInitialDataDrugEventPairNewDatabase;
+    @Autowired
+    MedCanadaLoadingInitialDataDrugEventPairOverallDatabase medCanadaLoadingInitialDataDrugEventPairOverallDatabase;
 
     public void loadingInitialDataDrugEventPairStats(int databaseIndex, String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
 
-        boolean finishedLoading = loadingInitialDataDrugEventPairOverallDatabase.loading(databaseIndex, fileAddress, resultFileAddress);
+        boolean finishedLoading = FDALoadingInitialDataDrugEventPairOverallDatabase.loading(databaseIndex, fileAddress, resultFileAddress);
 
         if (finishedLoading) {
             System.out.println("FDA Drug Event Pair Loading Completed Successfully");
@@ -48,7 +50,7 @@ public class APIDelegator {
 
     public void loadingInitialDataDrugIndicationEventPairStats(int databaseIndex, String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
 
-        boolean finishedLoading = loadingInitialDataDrugIndicationDrugPairOverallDatabase.loading(databaseIndex, fileAddress, resultFileAddress);
+        boolean finishedLoading = FDALoadingInitialDataDrugIndicationDrugPairOverallDatabase.loading(databaseIndex, fileAddress, resultFileAddress);
 
         if (finishedLoading) {
             System.out.println(" FDA Drug Indication Drug Name Pair Loading Completed Successfully");
@@ -58,7 +60,7 @@ public class APIDelegator {
 
     public void loadingOffsidesInitialDataDrugEventPairNewDatabaseStats(int databaseIndex, String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
 
-        boolean finishedLoading = loadingOffsidesInitialDataDrugEventPairNewDatabase.loading(databaseIndex, fileAddress, resultFileAddress);
+        boolean finishedLoading = offsidesLoadingInitialDataDrugEventPairNewDatabase.loading(databaseIndex, fileAddress, resultFileAddress);
 
         if (finishedLoading) {
             System.out.println(" Offsides Drug Name Pair Loading Completed Successfully");
@@ -68,10 +70,20 @@ public class APIDelegator {
 
     public void loadingTwosidesInitialDataDrugEventPairNewDatabaseStats(int databaseIndex, String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
 
-        boolean finishedLoading = loadingTwosidesInitialDataDrugEventPairNewDatabase.loading(databaseIndex, fileAddress, resultFileAddress);
+        boolean finishedLoading = twosidesLoadingInitialDataDrugEventPairNewDatabase.loading(databaseIndex, fileAddress, resultFileAddress);
 
         if (finishedLoading) {
             System.out.println(" Twosides Drug Name Pair and Event store Loading Completed Successfully");
+        }
+
+    }
+
+    public void loadingMedCanadaInitialDataDrugEventPairNewDatabaseStats(int databaseIndex, String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
+
+        boolean finishedLoading = medCanadaLoadingInitialDataDrugEventPairOverallDatabase.loading(databaseIndex, fileAddress, resultFileAddress);
+
+        if (finishedLoading) {
+            System.out.println(" MedCanada Drug Name Pair and Event store Loading Completed Successfully");
         }
 
     }

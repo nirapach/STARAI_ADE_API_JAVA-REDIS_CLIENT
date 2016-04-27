@@ -37,7 +37,7 @@ public class StarAIADEAPIMain {
 
         Option 5: Initial loading of Twosides database into database index "2"
 
-         Example: key -> "Drug Name + Drug Name" value -> ["Adverse Event 1","Adverse Event 2"]
+         Example: key -> "Drug Name :: Drug Name" value -> ["Adverse Event 1","Adverse Event 2"]
 
         Note: In case if this is the first time execution it is mandatory to give option as "1". Database always needs to flushed first time to eliminate other data. On option 4 also database is flushed, but the database used for "Clinical Trials stage Adverse Events is '2'". So, dtaabse index '2' clinical trials data. So, while loading and retriving not FDA approved adverse events use databse index as '2'.
 
@@ -106,6 +106,10 @@ Sci Transl Med 14 March 2012 4:125ra31. [DOI:10.1126/scitranslmed.3003377]
 
             case 5:
                 apiDelegator.loadingTwosidesInitialDataDrugEventPairNewDatabaseStats(databaseIndex, input_file_address, result_files_address);
+                break;
+
+            case 6:
+                apiDelegator.loadingMedCanadaInitialDataDrugEventPairNewDatabaseStats(databaseIndex, input_file_address, result_files_address);
                 break;
 
             default:
