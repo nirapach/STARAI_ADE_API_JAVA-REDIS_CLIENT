@@ -4,10 +4,7 @@ package com.ade.jedis.views;
  * Created by Niranjan on 4/18/2016.
  */
 
-import com.ade.jedis.api.LoadingInitialDataDrugEventPairOverallDatabase;
-import com.ade.jedis.api.LoadingInitialDataDrugIndicationDrugPairOverallDatabase;
-import com.ade.jedis.api.LoadingOffsidesInitialDataDrugEventPairNewDatabase;
-import com.ade.jedis.api.RetrieveData;
+import com.ade.jedis.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +33,8 @@ public class APIDelegator {
     RetrieveData retrieveData;
     @Autowired
     LoadingOffsidesInitialDataDrugEventPairNewDatabase loadingOffsidesInitialDataDrugEventPairNewDatabase;
+    @Autowired
+    LoadingTwosidesInitialDataDrugEventPairNewDatabase loadingTwosidesInitialDataDrugEventPairNewDatabase;
 
     public void loadingInitialDataDrugEventPairStats(int databaseIndex, String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
 
@@ -63,6 +62,16 @@ public class APIDelegator {
 
         if (finishedLoading) {
             System.out.println(" Offsides Drug Name Pair Loading Completed Successfully");
+        }
+
+    }
+
+    public void loadingTwosidesInitialDataDrugEventPairNewDatabaseStats(int databaseIndex, String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
+
+        boolean finishedLoading = loadingTwosidesInitialDataDrugEventPairNewDatabase.loading(databaseIndex, fileAddress, resultFileAddress);
+
+        if (finishedLoading) {
+            System.out.println(" Twosides Drug Name Pair and Event store Loading Completed Successfully");
         }
 
     }
