@@ -18,8 +18,10 @@ o Execution steps:
 Important Information regarding the various data sources taht are integrated into the client
 --------------------------------------------------------------------------------------------------
 [Database Index : '1']---> FDA approved Drug Event Pairs and their corresponding information
+
 [Database Index : '2']---> Offisdes and Twosides datasources which are not FDA approved Drug Event Pairs and their corresponding information
-[Database Index : '1']--->MED Canada Drug Event Pairs and their corresponding information
+
+[Database Index : '3']--->MED Canada Drug Event Pairs and their corresponding information
 
 
 Important References:
