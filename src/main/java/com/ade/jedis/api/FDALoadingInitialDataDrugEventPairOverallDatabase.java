@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Component
 @SuppressWarnings("unchecked")
-public class LoadingInitialDataDrugEventPairOverallDatabase {
+public class FDALoadingInitialDataDrugEventPairOverallDatabase {
 
     //address of your redis server
     private static final String redisHost = "127.0.0.1";
