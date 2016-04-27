@@ -41,10 +41,10 @@ Guide for the input arguments:
 ----------------------------
 There are four arguments: 
 
-First Argument: Options
-Second Argument: Database
-Third Argument: Input FIle Address
-Fourth Argument: Result File Address
+[First Argument: Options]
+[Second Argument: Database]
+[Third Argument: Input FIle Address]
+[Fourth Argument: Result File Address]
 
 
      /*
