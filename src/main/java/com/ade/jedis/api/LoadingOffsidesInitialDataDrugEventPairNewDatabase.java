@@ -68,36 +68,40 @@ public class LoadingOffsidesInitialDataDrugEventPairNewDatabase {
 
                             String[] inputData = line.split(":");
 
-                            if ((inputData.length > 1) && (inputData[0] != null && inputData[0] != " ") && (inputData[1]!=null && inputData[1]!=" " )) {
-                                String eventSubstring=inputData[2].substring(inputData[2].indexOf("["),inputData[2].lastIndexOf("]"));
-                                String eventData[]=eventSubstring.split(",");
+                            if ((inputData.length > 1) && (inputData[0] != null && inputData[0] != " ") && (inputData[1] != null && inputData[1] != " ")) {
+                                String eventSubstring = inputData[1].substring(inputData[1].indexOf("["), inputData[1].lastIndexOf("]"));
+                                String eventData[] = eventSubstring.split(",");
 
                                 String drugName = inputData[0];
                                 drugName = dataCleaning(drugName);
-
+                                /*System.out.println(drugName);
+                                System.out.println("---------------------------------------------------");*/
                                 String eventPair;
-                                if (drugEventList.containsKey(drugName) && drugName != null && drugName != "") {
+                                for (int e = 0; e < eventData.length; e++) {
 
-                                    eventPair = inputData[2];
-                                    eventPair = dataCleaning(eventPair);
-                                    HashSet<String> oldValue = drugEventList.get(drugName);
-                                    if (eventPair != " " && eventPair != null && eventPair != "") {
-                                        oldValue.add(eventPair);
-                                    } else {
-                                        oldValue.add("Not Specified");
-                                    }
-                                    drugEventList.put(drugName, oldValue);
-                                } else {
-                                    if (!drugEventList.containsKey(drugName) && drugName != null && drugName != "") {
-                                        HashSet<String> newValue = new HashSet<String>();
-                                        eventPair = inputData[2];
-                                        eventPair = dataCleaning(eventPair);
+                                    eventPair = dataCleaning(eventData[e]);
+                                    /*System.out.println(eventPair);
+                                    System.out.println("///////////////////////////////////////////////");*/
+                                    if (drugEventList.containsKey(drugName) && drugName != null && drugName != "") {
+
+                                        HashSet<String> oldValue = drugEventList.get(drugName);
                                         if (eventPair != " " && eventPair != null && eventPair != "") {
-                                            newValue.add(eventPair);
+                                            oldValue.add(eventPair);
                                         } else {
-                                            newValue.add("Not Specified");
+                                            oldValue.add("Not Specified");
                                         }
-                                        drugEventList.put(drugName, newValue);
+                                        drugEventList.put(drugName, oldValue);
+                                    } else {
+                                        if (!drugEventList.containsKey(drugName) && drugName != null && drugName != "") {
+                                            HashSet<String> newValue = new HashSet<String>();
+
+                                            if (eventPair != " " && eventPair != null && eventPair != "") {
+                                                newValue.add(eventPair);
+                                            } else {
+                                                newValue.add("Not Specified");
+                                            }
+                                            drugEventList.put(drugName, newValue);
+                                        }
                                     }
                                 }
                             }

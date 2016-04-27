@@ -24,9 +24,9 @@ public class LoadingInitialDataDrugIndicationDrugPairOverallDatabase {
     //private static JedisPool pool = null;
 
 
-    public static String dataCleaning(String inputString){
+    public static String dataCleaning(String inputString) {
 
-        if(inputString != null && inputString !=" " && inputString !="") {
+        if (inputString != null && inputString != " " && inputString != "") {
             inputString = inputString.replaceAll("MG", " ");
             inputString = inputString.replaceAll("ML", " ");
             inputString = inputString.replaceAll("[^a-zA-Z]+", " ");
@@ -70,13 +70,13 @@ public class LoadingInitialDataDrugIndicationDrugPairOverallDatabase {
                         if ((inputData.length > 2 || inputData.length > 1) && (inputData[1] != null && inputData[1] != " ")) {
 
                             String drugName;
-                            String drugIndication=inputData[1];
-                            drugIndication=dataCleaning(drugIndication);
+                            String drugIndication = inputData[1];
+                            drugIndication = dataCleaning(drugIndication);
 
-                            if (drugEventList.containsKey(drugIndication) && drugIndication !=null && drugIndication != "") {
+                            if (drugEventList.containsKey(drugIndication) && drugIndication != null && drugIndication != "") {
 
-                                drugName=inputData[0];
-                                drugName=dataCleaning(drugName);
+                                drugName = inputData[0];
+                                drugName = dataCleaning(drugName);
                                 HashSet<String> oldValue = drugEventList.get(drugIndication);
                                 if (drugName != " " && drugName != null && drugName != "") {
                                     oldValue.add(drugName);
@@ -85,10 +85,10 @@ public class LoadingInitialDataDrugIndicationDrugPairOverallDatabase {
                                 }
                                 drugEventList.put(drugIndication, oldValue);
                             } else {
-                                if (!drugEventList.containsKey(drugIndication)  && drugIndication !=null && drugIndication != "") {
+                                if (!drugEventList.containsKey(drugIndication) && drugIndication != null && drugIndication != "") {
                                     HashSet<String> newValue = new HashSet<String>();
-                                    drugName=inputData[0];
-                                    drugName=dataCleaning(drugName);
+                                    drugName = inputData[0];
+                                    drugName = dataCleaning(drugName);
                                     if (drugName != " " && drugName != null && drugName != "") {
                                         newValue.add(drugName);
                                     } else {
