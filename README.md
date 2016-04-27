@@ -19,7 +19,6 @@ o Execution steps:
 Important References:
 ----------------------
 
-/*
 What is TwoSides Database:
 ---------------------------
 "The Twosides databases is a resource of polypharmacy side effects for pairs of drugs. This database contains 868,221 significant associations between 59,220 pairs of drugs and 1301 adverse events. These associations are limited to only those that cannot be clearly attributed to either drug alone (that is, those associations covered in OFFSIDES). The database contains an additional 3,782,910 significant associations for which the drug pair has a higher side-effect association score, determined using the proportional reporting ratio (PRR), than those of the individual drugs alone."
@@ -34,7 +33,7 @@ Reference:
 Data-Driven Prediction of Drug Effects and Interactions
 Nicholas P. Tatonetti, Patrick P. Ye, Roxana Daneshjou, and Russ B. Altman
 Sci Transl Med 14 March 2012 4:125ra31. [DOI:10.1126/scitranslmed.3003377]
-*/
+
 
 
 
