@@ -112,8 +112,13 @@ public class OffsidesLoadingInitialDataDrugEventPairNewDatabase {
                         for (Map.Entry<String, HashSet<String>> entry : drugEventList.entrySet()) {
 
                             HashSet<String> updatedSet = entry.getValue();
-                            //System.out.println(entry.getKey()+","+updatedSet.size());
+                            /*System.out.println("--------------");
+                            System.out.println(entry.getKey());
+                            *///System.out.println(entry.getKey()+","+updatedSet.size());
                             for (String eventValue : updatedSet) {
+                                /*System.out.println("--------------");
+                                System.out.println(eventValue);
+                                System.out.println("--------------");*/
                                 jedis.sadd(entry.getKey(), eventValue);
                             }
                         }
