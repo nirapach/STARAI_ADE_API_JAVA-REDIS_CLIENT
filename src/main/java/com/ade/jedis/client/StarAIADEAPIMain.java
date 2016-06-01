@@ -112,6 +112,10 @@ Sci Transl Med 14 March 2012 4:125ra31. [DOI:10.1126/scitranslmed.3003377]
                 apiDelegator.loadingMedCanadaInitialDataDrugEventPairNewDatabaseStats(databaseIndex, input_file_address, result_files_address);
                 break;
 
+            case 7:
+                apiDelegator.getPMIDAbstracts(input_file_address, result_files_address);
+                break;
+
             default:
                 break;
 

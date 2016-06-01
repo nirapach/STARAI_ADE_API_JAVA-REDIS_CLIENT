@@ -41,6 +41,17 @@ public class APIDelegator {
     @Autowired
     MedCanadaLoadingInitialDataDrugEventPairOverallDatabase medCanadaLoadingInitialDataDrugEventPairOverallDatabase;
 
+
+    public void getPMIDAbstracts(String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
+
+        boolean finishedLoading = pmid_abstract.getPMID(fileAddress,resultFileAddress);
+
+        if (finishedLoading) {
+            System.out.println("Pubmed Abstracts succesffuly extracted");
+        }
+
+    }
+
     public void loadingInitialDataDrugEventPairStats(int databaseIndex, String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
 
         boolean finishedLoading = FDALoadingInitialDataDrugEventPairOverallDatabase.loading(databaseIndex, fileAddress, resultFileAddress);
@@ -105,5 +116,6 @@ public class APIDelegator {
             System.out.println("Failure. Please check your input");
         }
     }
+
 
 }
