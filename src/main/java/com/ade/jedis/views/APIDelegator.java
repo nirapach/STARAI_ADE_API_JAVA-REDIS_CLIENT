@@ -5,6 +5,7 @@ package com.ade.jedis.views;
  */
 
 import com.ade.jedis.api.*;
+import com.ade.jedis.pubmed_extracts.PMID_Abstract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class APIDelegator {
      */
     Logger logger = LoggerFactory.getLogger(APIDelegator.class);
 
+    @Autowired
+    PMID_Abstract pmid_abstract;
     @Autowired
     FDALoadingInitialDataDrugEventPairOverallDatabase FDALoadingInitialDataDrugEventPairOverallDatabase;
     @Autowired
