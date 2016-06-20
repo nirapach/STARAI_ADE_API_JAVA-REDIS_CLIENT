@@ -164,6 +164,7 @@ public class TwosidesLoadingInitialDataDrugEventPairNewDatabase {
             //calling the function
             behaveAsMapOfSets(fileAddress, jedis);
         } finally {
+            jedis.save();
             jedis.disconnect();
             System.out.println("\nDisconnected jedis client");
         }

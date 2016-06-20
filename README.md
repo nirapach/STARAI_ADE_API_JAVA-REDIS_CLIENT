@@ -77,6 +77,23 @@ There are four arguments:
         Option 5: Initial loading of Twosides database into database index "2"
 
          Example: key -> "Drug Name + Drug Name" value -> ["Adverse Event 1","Adverse Event 2"]
+         
+        Option 6: Initial loading of MedCanada database into database index "3"
+
+         Example: key -> "Drug Name" value -> ["Adverse Event 1","Adverse Event 2"]
+
+        Option 7: Extracting Pubmed abstracts for FDA ADE pairs
+
+         Example: "Drug Name": ["Adverse Event 1","PMID","Abstract Text"]
+        
+        Option 8: Extracting Pubmed abstracts for MedCanada ADE pairs
+
+         Example: "Drug Name": ["Adverse Event 1","PMID","Abstract Text"]
+         
+        Option 9: Extracting Pubmed abstracts for Clincial and Polypharmacy(Offsides) ADE pairs
+
+         Example: "Drug Name": ["Adverse Event 1","PMID","Abstract Text"]
+
 
         Note: In case if this is the first time execution it is mandatory to give option as "1". Database always needs to flushed first time to eliminate other data. On option 4 also database is flushed, but the database used for "Clinical Trials stage Adverse Events is '2'". So, dtaabse index '2' clinical trials data. So, while loading and retriving not FDA approved adverse events use databse index as '2'.
 
