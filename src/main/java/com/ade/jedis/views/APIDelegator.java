@@ -5,6 +5,9 @@ package com.ade.jedis.views;
  */
 
 import com.ade.jedis.api.*;
+import com.ade.jedis.pubmed_extracts.FDA_PMID_Abstract;
+import com.ade.jedis.pubmed_extracts.MedCanada_PMID_Abstract;
+import com.ade.jedis.pubmed_extracts.OffSides_PMID_Abstract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ public class APIDelegator {
      */
     Logger logger = LoggerFactory.getLogger(APIDelegator.class);
 
+   /* @Autowired
+    FDA_PMID_Abstract pmid_abstract;*/
     @Autowired
     FDALoadingInitialDataDrugEventPairOverallDatabase FDALoadingInitialDataDrugEventPairOverallDatabase;
     @Autowired
@@ -37,6 +42,48 @@ public class APIDelegator {
     TwosidesLoadingInitialDataDrugEventPairNewDatabase twosidesLoadingInitialDataDrugEventPairNewDatabase;
     @Autowired
     MedCanadaLoadingInitialDataDrugEventPairOverallDatabase medCanadaLoadingInitialDataDrugEventPairOverallDatabase;
+
+
+    public void getPMIDAbstracts(String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
+
+        //System.out.println(fileAddress+"-----------"+resultFileAddress);
+        FDA_PMID_Abstract FDAPmid_abstract = new FDA_PMID_Abstract();
+
+        boolean finishedLoading = FDAPmid_abstract.getPMID(fileAddress,resultFileAddress);
+
+        if (finishedLoading) {
+            System.out.println("Pubmed Abstracts succesffuly extracted");
+        }
+
+    }
+
+    public void getMedCanadaAbstracts(String database,String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
+
+        //System.out.println(fileAddress+"-----------"+resultFileAddress);
+        MedCanada_PMID_Abstract medCanada_pmid_abstract = new MedCanada_PMID_Abstract();
+
+        boolean finishedLoading = medCanada_pmid_abstract.getPMID(database,fileAddress,resultFileAddress);
+
+        if (finishedLoading) {
+            System.out.println("MedCanada Pubmed Abstracts succesffuly extracted");
+        }
+
+    }
+
+    public void getOffsidesAbstracts(String database,String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
+
+        //System.out.println(fileAddress+"-----------"+resultFileAddress);
+        OffSides_PMID_Abstract offSides_pmid_abstract = new OffSides_PMID_Abstract();
+
+        boolean finishedLoading = offSides_pmid_abstract.getPMID(database,fileAddress,resultFileAddress);
+
+        if (finishedLoading) {
+            System.out.println("Offsides Pubmed Abstracts succesffuly extracted");
+        }
+
+    }
+
+
 
     public void loadingInitialDataDrugEventPairStats(int databaseIndex, String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
 
@@ -102,5 +149,6 @@ public class APIDelegator {
             System.out.println("Failure. Please check your input");
         }
     }
+
 
 }
