@@ -85,14 +85,17 @@ Sci Transl Med 14 March 2012 4:125ra31. [DOI:10.1126/scitranslmed.3003377]
 
         APIDelegator apiDelegator = new APIDelegator();
         int OperationProvided = Integer.valueOf(options);
-        int databaseIndex = Integer.valueOf(database);
+        int databaseIndex;
+
         switch (OperationProvided) {
 
             case 1:
+                databaseIndex = Integer.valueOf(database);
                 apiDelegator.loadingInitialDataDrugEventPairStats(databaseIndex, input_file_address, result_files_address);
                 break;
 
             case 2:
+                databaseIndex = Integer.valueOf(database);
                 apiDelegator.loadingInitialDataDrugIndicationEventPairStats(databaseIndex, input_file_address, result_files_address);
                 break;
 
@@ -101,19 +104,30 @@ Sci Transl Med 14 March 2012 4:125ra31. [DOI:10.1126/scitranslmed.3003377]
                 break;
 
             case 4:
+                databaseIndex = Integer.valueOf(database);
                 apiDelegator.loadingOffsidesInitialDataDrugEventPairNewDatabaseStats(databaseIndex, input_file_address, result_files_address);
                 break;
 
             case 5:
+                databaseIndex = Integer.valueOf(database);
                 apiDelegator.loadingTwosidesInitialDataDrugEventPairNewDatabaseStats(databaseIndex, input_file_address, result_files_address);
                 break;
 
             case 6:
+                databaseIndex = Integer.valueOf(database);
                 apiDelegator.loadingMedCanadaInitialDataDrugEventPairNewDatabaseStats(databaseIndex, input_file_address, result_files_address);
                 break;
 
             case 7:
                 apiDelegator.getPMIDAbstracts(input_file_address, result_files_address);
+                break;
+
+            case 8:
+                apiDelegator.getMedCanadaAbstracts(database,input_file_address, result_files_address);
+                break;
+
+            case 9:
+                apiDelegator.getOffsidesAbstracts(database,input_file_address, result_files_address);
                 break;
 
             default:
