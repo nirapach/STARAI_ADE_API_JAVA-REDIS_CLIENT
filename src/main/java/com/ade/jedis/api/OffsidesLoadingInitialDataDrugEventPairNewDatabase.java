@@ -168,6 +168,7 @@ public class OffsidesLoadingInitialDataDrugEventPairNewDatabase {
             behaveAsMapOfSets(fileAddress, jedis);
         } finally {
             jedis.disconnect();
+            jedis.save();
             System.out.println("\nDisconnected jedis client");
         }
         System.out.println("Database_Loaded");
