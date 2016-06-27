@@ -19,9 +19,6 @@ public class FDALoadingInitialDataDrugEventPairOverallDatabase {
     //address of your redis server
     private static final String redisHost = "127.0.0.1";
     private static final Integer redisPort = 6379;
-
-    //the jedis connection pool..
-    //private static JedisPool pool = null;
     public static String dataCleaning(String inputString) {
 
         if (inputString != null && inputString != " " && inputString != "") {
@@ -36,16 +33,11 @@ public class FDALoadingInitialDataDrugEventPairOverallDatabase {
     }
 
     public static void behaveAsMapOfSets(String input_file_address, Jedis jedis) throws InterruptedException {
-
-        //configure our pool connection
-        //pool = new JedisPool(redisHost, redisPort);
-        //get a jedis connection jedis connection pool
-        //Jedis jedis = pool.getResource();
         File datadirectory = new File(input_file_address);
         System.out.println("\nLoading data in this format [Map<String, List<String>>] = [Map<Drug, List<Event>>]");
 
-        //Jedis jedis = null;
-        //csv files to get the wuery terms
+
+        //csv files to get the query terms
         File[] files = datadirectory.listFiles();
         System.out.println(files.length);
         BufferedReader fileReader = null;
@@ -103,7 +95,7 @@ public class FDALoadingInitialDataDrugEventPairOverallDatabase {
                     for (Map.Entry<String, HashSet<String>> entry : drugEventList.entrySet()) {
 
                         HashSet<String> updatedSet = entry.getValue();
-                        //System.out.println(entry.getKey()+","+updatedSet.size());
+
                         for (String eventValue : updatedSet) {
                             jedis.sadd(entry.getKey(), eventValue);
                         }
@@ -111,26 +103,19 @@ public class FDALoadingInitialDataDrugEventPairOverallDatabase {
                 }
             }
         } catch (JedisException e) {
-            //if something wrong happen, return it back to the pool
-           /* if (null != jedis) {
-                //pool.returnBrokenResource(jedis);
-                jedis = null;
-            }*/
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            //jedis.disconnect();
+
             try {
                 fileReader.close();
             } catch (IOException e) {
                 System.out.println("Error while closing fileReader/Writer !!!");
                 e.printStackTrace();
             }
-            ///it's important to return the Jedis instance to the pool once you've finished using it
-            /*if (null != jedis)
-                pool.returnResource(jedis);*/
         }
 
     }

@@ -39,14 +39,10 @@ public class TwosidesLoadingInitialDataDrugEventPairNewDatabase {
 
     public static void behaveAsMapOfSets(String input_file_address, Jedis jedis) throws InterruptedException {
 
-        //configure our pool connection
-        //pool = new JedisPool(redisHost, redisPort);
-        //get a jedis connection jedis connection pool
-        //Jedis jedis = pool.getResource();
+
         File datadirectory = new File(input_file_address);
         System.out.println("\nLoading Offsides data in this format [Map<String, List<String>>] = [Map<Drug + Drug, List<Event>>]");
 
-        //Jedis jedis = null;
         //csv files to get the wuery terms
         File[] files = datadirectory.listFiles();
         System.out.println(files.length);
@@ -76,14 +72,10 @@ public class TwosidesLoadingInitialDataDrugEventPairNewDatabase {
                                 String drugName = drugNamePair[0]+"::"+drugNamePair[1];
 
                                 drugName = dataCleaning(drugName);
-                                /*System.out.println(drugName);
-                                System.out.println("---------------------------------------------------");*/
                                 String eventPair;
                                 for (int e = 0; e < eventData.length; e++) {
 
                                     eventPair = dataCleaning(eventData[e]);
-                                    /*System.out.println(eventPair);
-                                    System.out.println("///////////////////////////////////////////////");*/
                                     if (drugEventList.containsKey(drugName) && drugName != null && drugName != "") {
 
                                         HashSet<String> oldValue = drugEventList.get(drugName);
@@ -123,11 +115,7 @@ public class TwosidesLoadingInitialDataDrugEventPairNewDatabase {
                 }
             }
         } catch (JedisException e) {
-            //if something wrong happen, return it back to the pool
-           /* if (null != jedis) {
-                //pool.returnBrokenResource(jedis);
-                jedis = null;
-            }*/
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -140,9 +128,7 @@ public class TwosidesLoadingInitialDataDrugEventPairNewDatabase {
                 System.out.println("Error while closing fileReader/Writer !!!");
                 e.printStackTrace();
             }
-            ///it's important to return the Jedis instance to the pool once you've finished using it
-            /*if (null != jedis)
-                pool.returnResource(jedis);*/
+
         }
 
     }
@@ -153,11 +139,8 @@ public class TwosidesLoadingInitialDataDrugEventPairNewDatabase {
         Jedis jedis = new Jedis(redisHost, redisPort);
         jedis.connect();
 
-
         //need to get the index of the database from the user next time
         jedis.select(databaseIndex);
-        //please be careful this will erase all previously existing data
-        //jedis.flushDB();
 
         System.out.println("Connected jedis client");
         try {
