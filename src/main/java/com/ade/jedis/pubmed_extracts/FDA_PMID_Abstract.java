@@ -75,12 +75,6 @@ public class FDA_PMID_Abstract {
         HttpGet httpGet = new HttpGet(builder.build());
 
         try {
-
-/*
-            System.out.println("GET Response Status: "
-                    + httpResponse.getStatusLine().getStatusCode());*/
-
-
             httpResponse = httpClient.execute(httpGet);
             reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
             String inputLine;
@@ -89,8 +83,6 @@ public class FDA_PMID_Abstract {
                 fbresponse.append(inputLine);
             }
             String feed = fbresponse.toString();
-
-            //System.out.println(feed);
             drugName = drugName.replaceAll("MG", " ");
             drugName = drugName.replaceAll("ML", " ");
             eventName = eventName.replaceAll("MG", " ");
@@ -150,13 +142,7 @@ public class FDA_PMID_Abstract {
         try {
             httpResponse = httpClient.execute(httpGet);
 
-
-            /*System.out.println("GET Response Status: "
-                    + httpResponse.getStatusLine().getStatusCode());
-
-            System.out.print(httpResponse.getEntity().getContent());*/
             reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
-            //System.out.print(reader.);
             String inputLine;
             StringBuffer responseString = new StringBuffer();
             while ((inputLine = reader.readLine()) != null) {
@@ -164,7 +150,6 @@ public class FDA_PMID_Abstract {
             }
             String feed = responseString.toString();
 
-            //System.out.println(feed);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = factory.newDocumentBuilder();
 
@@ -173,17 +158,14 @@ public class FDA_PMID_Abstract {
             NodeList nL = document.getElementsByTagName("Id");
             for (int i = 0; i < nL.getLength(); i++) {
                 Node node = nL.item(i);
-                //System.out.println("\nCurrent Element :" + node.getTextContent());
                 idList += node.getTextContent() + ";";
             }
-            //System.out.println(idList);
+
             writer.write(drugName);
             writer.append(CSV_SEPARATOR);
             writer.write(eventName);
             writer.append(CSV_SEPARATOR);
             writer.write(idList);
-
-            //reader.close();
 
 
         } catch (ClientProtocolException e) {
@@ -212,25 +194,10 @@ public class FDA_PMID_Abstract {
         //FDA_PMID_Abstract pmid_abstract = new FDA_PMID_Abstract();
 
         try {
-            //this snippet is for getting the ID's
-           /* String inputFile = args[0];
-            String OutputCsvFileAddress = args[1];*/
-            //String OutputAbstractFileAddress = abstractFileAddress;
+
             String inputFile = inputFileaAddress;
             String OutputCsvFileAddress = abstractFileAddress;
-            //String OutputAbstractFileAddress = abstractFileAddress;
-            //File OutputCsvFile=new File(abstractFileAddress+"/openFDAPubmedPMIDFile.csv")
-            /*File OutputCsvFile = new File(OutputCsvFileAddress + "openFDAPubmedPMIDFile.csv");
-            BufferedReader br = new BufferedReader(new FileReader(inputFile));
-            FileWriter writer = new FileWriter(OutputCsvFile);
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] word = line.split(CSV_SEPARATOR);
-                //pmid_abstract.getIDOnDrugAndEvents("cilazapril", "angina", writer);
-                getIDOnDrugAndEvents(word[0], word[1], writer);
-                writer.append(NEW_LINE_SEPARATOR);
-            }
-            writer.close();*/
+
             File inputfiles = new File(inputFileaAddress);
 
             File[] files = inputfiles.listFiles();
@@ -238,7 +205,6 @@ public class FDA_PMID_Abstract {
             //this snippet is for getting the text
             File OutputCsvFile = files[0];
             File textFile = new File(OutputCsvFileAddress + "openFDAPubmedAbstractFile.csv");
-            //File textFile = new File(OutputAbstractFile);
             FileWriter textWriter = new FileWriter(textFile);
             BufferedReader abs_br = new BufferedReader(new FileReader(OutputCsvFile));
             String textLine;
@@ -248,7 +214,6 @@ public class FDA_PMID_Abstract {
 
                 String[] PMID_Pairs = textLine.split(CSV_SEPARATOR);
                 if (PMID_Pairs != null && PMID_Pairs.length > 2) {
-                    //System.out.println(PMID_Pairs[2]);
 
                     if (PMID_Pairs[2].indexOf(";") > 0) {
                         String[] PMIDS = PMID_Pairs[2].split(";");
@@ -270,6 +235,6 @@ public class FDA_PMID_Abstract {
             e.printStackTrace();
         }
         return true;
-        //pmid_abstract.getPMID(9524014," ");
+
     }
 }

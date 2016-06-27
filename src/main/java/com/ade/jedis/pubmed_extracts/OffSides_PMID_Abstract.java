@@ -213,7 +213,6 @@ public class OffSides_PMID_Abstract {
     // public static void main(String args[]) throws IOException, PropertyVetoException, SQLException, URISyntaxException {
 
     public boolean getPMID(String inputFileaAddress, String outputFileAddress, String abstractFileAddress) throws IOException, PropertyVetoException, SQLException, URISyntaxException {
-        //FDA_PMID_Abstract pmid_abstract = new FDA_PMID_Abstract();
 
         try {
             //this snippet is for getting the ID's
@@ -228,7 +227,6 @@ public class OffSides_PMID_Abstract {
             System.out.println(inputFile);
             String OutputCsvFileAddress = outputFileAddress;
             String OutputAbstractFileAddress = abstractFileAddress;
-            // File OutputCsvFile = new File(outputFileAddress + "/medCanadaPubmedPMIDFile.csv");
             File OutputCsvFile = new File(OutputCsvFileAddress + "OffsidesPubmedPMIDFile.csv");
             BufferedReader br = new BufferedReader(new FileReader(inputFile));
             FileWriter writer = new FileWriter(OutputCsvFile);
@@ -320,6 +318,5 @@ public class OffSides_PMID_Abstract {
             e.printStackTrace();
         }
         return true;
-        //pmid_abstract.getPMID(9524014," ");
     }
 }

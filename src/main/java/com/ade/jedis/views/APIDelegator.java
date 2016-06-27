@@ -28,8 +28,6 @@ public class APIDelegator {
      */
     Logger logger = LoggerFactory.getLogger(APIDelegator.class);
 
-   /* @Autowired
-    FDA_PMID_Abstract pmid_abstract;*/
     @Autowired
     FDALoadingInitialDataDrugEventPairOverallDatabase FDALoadingInitialDataDrugEventPairOverallDatabase;
     @Autowired
@@ -46,7 +44,6 @@ public class APIDelegator {
 
     public void getPMIDAbstracts(String fileAddress, String resultFileAddress) throws IOException, URISyntaxException, PropertyVetoException, SQLException, InterruptedException {
 
-        //System.out.println(fileAddress+"-----------"+resultFileAddress);
         FDA_PMID_Abstract FDAPmid_abstract = new FDA_PMID_Abstract();
 
         boolean finishedLoading = FDAPmid_abstract.getPMID(fileAddress,resultFileAddress);

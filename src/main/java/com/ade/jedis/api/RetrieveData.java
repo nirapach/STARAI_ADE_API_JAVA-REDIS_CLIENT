@@ -32,8 +32,6 @@ public class RetrieveData {
         JSONArray arrayOutput = new JSONArray();
         for (String effects : values) {
             arrayOutput.put(effects);
-            //writer.append(effects);
-            //writer.append(SEMI_COLON_DELIMITER);
         }
         jsoon.put("Values", arrayOutput);
         jsoon.put("Drug", drugName);
@@ -59,15 +57,9 @@ public class RetrieveData {
             writer = new FileWriter(outputFilePath);
             String drugLine;
             while ((drugLine = fileReader.readLine()) != null) {
-                //writer.append(drugLine);
-                //writer.append(COMMA_DELIMITER);
+
                 drugLine = drugLine.toLowerCase().trim();
                 Set<String> effectOutput = conn.smembers(drugLine);
-                /*for(String effects: effectOutput){
-                    arrayOutput.put(effects);
-                    //writer.append(effects);
-                    //writer.append(SEMI_COLON_DELIMITER);
-                }*/
                 writer.append(makeJsonObject(drugLine, effectOutput).toString());
                 writer.append(NEW_LINE_SEPARATOR);
 

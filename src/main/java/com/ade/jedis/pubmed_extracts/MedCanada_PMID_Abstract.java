@@ -38,18 +38,6 @@ public class MedCanada_PMID_Abstract {
     private static final String CSV_SEPARATOR = ",";
     private static final String COLON_SEPARATOR = ":";
 
-    public static String dataCleaning(String inputString) {
-
-        if (inputString != null && inputString != " " && inputString != "") {
-
-            inputString = inputString.replaceAll("[^a-zA-Z0-9]+", " ");
-            inputString = inputString.replaceAll("[^a-zA-Z0-9]+", " ");
-            inputString = inputString.trim();
-            inputString = inputString.toLowerCase();
-        }
-        return inputString;
-    }
-
     public void getPMIDAbstract(FileWriter writer, String drugName, String eventName, String PMID) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
 
         //Fields in the parameters
@@ -69,19 +57,12 @@ public class MedCanada_PMID_Abstract {
 
 
         BufferedReader reader = null;
-        //boolean status = false;
         //getting the httpresponse
         CloseableHttpResponse httpResponse;
         //declaring the httpget request
         HttpGet httpGet = new HttpGet(builder.build());
 
         try {
-
-/*
-            System.out.println("GET Response Status: "
-                    + httpResponse.getStatusLine().getStatusCode());*/
-
-
             httpResponse = httpClient.execute(httpGet);
             reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
             String inputLine;
@@ -152,12 +133,8 @@ public class MedCanada_PMID_Abstract {
             httpResponse = httpClient.execute(httpGet);
 
 
-            /*System.out.println("GET Response Status: "
-                    + httpResponse.getStatusLine().getStatusCode());
 
-            System.out.print(httpResponse.getEntity().getContent());*/
             reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
-            //System.out.print(reader.);
             String inputLine;
             StringBuffer responseString = new StringBuffer();
             while ((inputLine = reader.readLine()) != null) {
@@ -165,7 +142,6 @@ public class MedCanada_PMID_Abstract {
             }
             String feed = responseString.toString();
 
-            //System.out.println(feed);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = factory.newDocumentBuilder();
 
@@ -174,7 +150,6 @@ public class MedCanada_PMID_Abstract {
             NodeList nL = document.getElementsByTagName("Id");
             for (int i = 0; i < nL.getLength(); i++) {
                 Node node = nL.item(i);
-                //System.out.println("\nCurrent Element :" + node.getTextContent());
                 idList += node.getTextContent() + ";";
             }
             //System.out.println(idList);
@@ -207,10 +182,8 @@ public class MedCanada_PMID_Abstract {
         httpClient.close();
 
     }
-    // public static void main(String args[]) throws IOException, PropertyVetoException, SQLException, URISyntaxException {
 
     public boolean getPMID(String inputFileaAddress, String outputFileAddress, String abstractFileAddress) throws IOException, PropertyVetoException, SQLException, URISyntaxException {
-        //FDA_PMID_Abstract pmid_abstract = new FDA_PMID_Abstract();
 
         try {
             //this snippet is for getting the ID's
@@ -235,14 +208,7 @@ public class MedCanada_PMID_Abstract {
             }
             writer.close();
 
-            /*File inputfiles = new File(inputFileaAddress);
-
-            File[] files = inputfiles.listFiles();*/
-
-            //this snippet is for getting the text
-            //File OutputCsvFile = files[0];
             File textFile = new File(OutputAbstractFileAddress + "medCanadaPubmedAbstractFile.csv");
-            //File textFile = new File(OutputAbstractFile);
             FileWriter textWriter = new FileWriter(textFile);
             BufferedReader abs_br = new BufferedReader(new FileReader(OutputCsvFile));
             String textLine;
@@ -274,6 +240,5 @@ public class MedCanada_PMID_Abstract {
             e.printStackTrace();
         }
         return true;
-        //pmid_abstract.getPMID(9524014," ");
     }
 }
