@@ -1,0 +1,45 @@
+Follow these steps when NILS is restarted or Shutdown. I have written the scripts to load data in a single command.
+
+Info Regarding ADE Pairs:
+
+Step 1: 
+Type the command  like this:
+                 [nirapach@nils src]$   cd /home/projects/redis/redis-2.6.7/src/
+Type the command "redis-server" in the console like this
+                 [nirapach@nils src]$ redis-server
+
+Note: This will start the redis server. Make sure to do this in a separate terminal, as it will not render back to the $ sign again. You can close the terminal which will affect the server.
+
+Step 2:
+
+To load Adverse drug event pair data onto the server back into the server, run the following script "run_redis.sh" from the location "/home/projects/pubmed"
+
+Like this,
+                [nirapach@nils pubmed]$ ./run_redis.sh
+
+Note: This will take some time to finish, as the 'offsides' database takes more time.
+
+Once this is done, you can query the database normally from the UI given to you by Vignesh.
+
+
+Info Regarding Pubmed abstracts:
+We have generated Pubmed abstracts for FDA, Medcanada and Offsides ADE pairs and they are present in the location in the following order in csv files.
+/home/projects/pubmed/fda/outputfile/
+/home/projects/pubmed/medcanada/outputfile/
+/home/projects/pubmed/offsides/outputfile/
+In case, you wish to generate the abstracts again, please follow Step 3. But this is not needed for the UI to perform normally.
+
+Step 3:
+
+To load Adverse drug event abstarcts from Pubmed, run the following script " run_extract_pubmed_abstracts.sh" from the location "/home/projects/pubmed"
+
+Like this,
+
+                [nirapach@nils]$ cd /home/projects/pubmed/
+
+                [nirapach@nils pubmed]$ ./run_extract_pubmed_abstracts.sh
+
+Note: This will take lot of time and processing power from NILS. Careful consideration needed if other jobs are running.
+
+
+Please refer to the github projects for implementation guidelines regarding code change and reuse of the modules.
